@@ -1,0 +1,271 @@
+/* ==========================================================================
+   1. GLOBÁLNÍ NASTAVENÍ (Základ pro celý web)
+   ========================================================================== */
+* {
+    box-sizing: border-box; /* Zajišťuje, že padding neustřelí šířku elementu */
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    background-color: #f0f2f5; /* Světle šedé pozadí - nutné pro kontrast bílých boxů */
+    color: #1a1a1a;
+    line-height: 1.6;
+}
+
+/* ==========================================================================
+   2. NAVBAR (Horní černá lišta)
+   ========================================================================== */
+.top-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #1a1a1a;
+    color: white;
+    padding: 0 20px;
+    height: 60px;
+    position: sticky; /* Lišta zůstane nahoře při scrollování */
+    top: 0;
+    z-index: 1000;
+}
+
+.logo-text {
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 1.2rem;
+}
+
+/* Tlačítko hamburger menu */
+.menu-btn {
+    background: #f5f5f5;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    padding: 8px;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    width: 40px;
+    align-items: center;
+}
+
+.menu-btn span {
+    display: block;
+    width: 22px;
+    height: 2px;
+    background-color: #333;
+}
+
+/* ==========================================================================
+   3. VYSOUVACÍ MENU (Boční navigace)
+   ========================================================================== */
+.side-menu {
+    position: fixed;
+    top: 60px;
+    left: -260px; /* Musí být záporné, aby bylo menu schované */
+    width: 250px;
+    height: calc(100vh - 60px);
+    background-color: #222;
+    transition: left 0.3s ease-in-out; /* Animace pohybu */
+    display: flex;
+    flex-direction: column;
+    z-index: 999;
+    box-shadow: 2px 0 5px rgba(0,0,0,0.3);
+}
+
+.side-menu.active {
+    left: 0 !important; /* Vysune menu na začátek obrazovky */
+}
+
+.side-menu a {
+    color: white;
+    padding: 15px 25px;
+    text-decoration: none;
+    border-bottom: 1px solid #333;
+}
+
+.side-menu a:hover {
+    background-color: #f1c40f;
+    color: black;
+}
+
+/* ==========================================================================
+   4. HLAVNÍ STRÁNKA (Vítejte / Boxy)
+   ========================================================================== */
+.welcome-section {
+    text-align: center;
+    padding: 60px 20px;
+}
+
+.btn-start {
+    background-color: #f1c40f;
+    color: black;
+    padding: 12px 25px;
+    text-decoration: none;
+    border-radius: 5px;
+    font-weight: bold;
+    display: inline-block;
+    margin-bottom: 50px;
+}
+
+.main-boxes {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap; /* Na mobilu se boxy dají pod sebe */
+}
+
+.box {
+    background-color: #222b31;
+    color: white;
+    padding: 40px 20px;
+    border-radius: 10px;
+    flex: 1;
+    min-width: 300px;
+    max-width: 380px;
+    text-decoration: none;
+    text-align: center;
+    transition: 0.3s;
+}
+
+.box:hover { transform: translateY(-5px); }
+
+/* ==========================================================================
+   5. MŘÍŽKA PRODUKTŮ (Kytary / Komba)
+   ========================================================================== */
+.produkty-sekce { padding: 40px 20px; max-width: 1200px; margin: 0 auto; }
+
+.produkty-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 25px;
+}
+
+.produkt-karta {
+    background: #fff;
+    border: 1px solid #eee;
+    border-radius: 12px;
+    padding: 25px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+    display: flex;
+    flex-direction: column;
+}
+
+.btn-detail {
+    margin-top: auto;
+    background: #f1c40f;
+    color: black;
+    text-align: center;
+    padding: 10px;
+    text-decoration: none;
+    border-radius: 6px;
+    font-weight: bold;
+}
+
+/* ==========================================================================
+   6. DETAIL PRODUKTU (TVŮJ POŽADOVANÝ ČTVEREC / BOX)
+   ========================================================================== */
+.detail-sekce {
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Horizontální vycentrování */
+    min-height: 80vh;    /* Zajišťuje prostor na stránce */
+    padding: 40px 20px;
+}
+
+.btn-zpet {
+    align-self: flex-start; /* Tlačítko zpět zůstane vlevo */
+    max-width: 700px;
+    margin: 0 auto 15px auto;
+    color: #666;
+    text-decoration: none;
+    font-size: 0.9rem;
+}
+
+/* HLAVNÍ MODERNÍ BOX */
+.detail-wrapper {
+    background: #ffffff;      /* BÍLÁ BARVA BOXU */
+    width: 100%;
+    max-width: 700px;         /* Šířka boxu */
+    padding: 40px;            /* Vnitřní prostor */
+    border-radius: 15px;      /* Zaoblené rohy */
+    border: 1px solid #ddd;   /* Jemné ohraničení */
+    box-shadow: 0 15px 35px rgba(0,0,0,0.15); /* SILNÝ STÍN - dělá box "hezkým" */
+    text-align: left;
+}
+
+.kategorie-tag {
+    display: inline-block;
+    background: #222b31;
+    color: #f1c40f;
+    padding: 5px 12px;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    margin-bottom: 15px;
+    text-transform: uppercase;
+}
+
+.detail-tabulka {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0 30px 0;
+}
+
+.detail-tabulka td {
+    padding: 12px 5px;
+    border-bottom: 1px solid #eee;
+}
+
+.detail-tabulka td:first-child {
+    font-weight: bold;
+    color: #777;
+    width: 35%;
+}
+
+.cena-velka {
+    font-size: 1.8rem;
+    font-weight: bold;
+}
+/* obrazek */
+.detail-foto {
+    width: 100%;
+    text-align: center;
+    background-color: #f9f9f9;
+    padding: 20px;
+    border-radius: 10px;
+    margin-bottom: 25px;
+}
+
+.detail-foto img {
+    max-height: 300px; /* Aby fotka nebyla obří přes celou obrazovku */
+    object-fit: contain;
+}
+
+/* Žluté moderní tlačítko */
+.btn-vlozit {
+    background-color: #f1c40f;
+    color: black;
+    border: none;
+    padding: 18px;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+    font-size: 1rem;
+    width: 100%;
+    transition: 0.2s;
+}
+
+.btn-vlozit:hover { background-color: #e2b900; }
+
+/* ==========================================================================
+   7. PATIČKA
+   ========================================================================== */
+footer {
+    background-color: #1a1a1a;
+    color: white;
+    text-align: center;
+    padding: 20px;
+    margin-top: 50px;
+}

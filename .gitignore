@@ -1,0 +1,19 @@
+# --- DATABÁZE A KONFIGURACE ---
+# Nikdy nahrávat přihlašovací údaje na GitHub!
+db_connect.php
+config.php
+
+# --- SYSTÉMOVÉ SOUBORY ---
+.DS_Store
+Thumbs.db
+
+# --- PHPSTORM / IDE ---
+# Ignoruje nastavení tvého editoru
+.idea/
+.vscode/
+*.swp
+*.log
+
+# --- DOČASNÉ SOUBORY ---
+temp/
+cache/
