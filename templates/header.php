@@ -39,28 +39,33 @@ if (session_status() === PHP_SESSION_NONE) {
     </nav>
 </header>
 
-<div id="sideMenu" class="side-menu">
+<div id="side-menu" class="side-menu">
+    <?php if (isset($_SESSION['uzivatel_id'])): ?>
+        <a href="logout.php" style="font-weight: bold; border-bottom: 2px solid #444;">Odhlásit se (<?php echo htmlspecialchars($_SESSION['uzivatel_jmeno']); ?>)</a>
+    <?php else: ?>
+        <a href="login.php" style="font-weight: bold;">Přihlásit se</a>
+    <?php endif; ?>
+    <a href="profil.php">PROFIL</a>
     <a href="index.php">Domů</a>
     <a href="produkty.php?kat=1">Kytary</a>
     <a href="produkty.php?kat=2">Komba</a>
-    <a href="dotaznik.php" style="color: #f1c40f; font-weight: bold;">Průvodce výběrem</a>
-    <hr style="border: 0; border-top: 1px solid #444; margin: 10px 0;">
-    <?php if (isset($_SESSION['uzivatel_id'])): ?>
-        <a href="logout.php">Odhlásit se</a>
-    <?php else: ?>
-        <a href="login.php">Přihlásit se</a>
+    <a href="dotaznik.php">Průvodce výběrem</a>
+
+    <?php if (!isset($_SESSION['uzivatel_id'])): ?>
+        <hr style="border: 0; border-top: 1px solid #333; margin: 5px 0;">
         <a href="registrace.php">Registrace</a>
     <?php endif; ?>
 </div>
 
 <script>
     function toggleMenu() {
-        var menu = document.getElementById('sideMenu');
+        // Opravené ID na side-menu podle tvého zjištění
+        var menu = document.getElementById('side-menu');
         if (menu) {
             menu.classList.toggle('active');
-            console.log("Menu přepnuto!"); // Tohle uvidíš v konzoli (F12)
+            console.log("Menu přepnuto!");
         } else {
-            console.error("Chyba: Element sideMenu nebyl nalezen!");
+            console.error("Chyba: Element side-menu nebyl nalezen!");
         }
     }
 </script>

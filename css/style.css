@@ -64,31 +64,32 @@ body {
 .side-menu {
     position: fixed;
     top: 60px;
-    left: -260px; /* Musí být záporné, aby bylo menu schované */
+    left: -260px; /* Skryté vlevo */
     width: 250px;
     height: calc(100vh - 60px);
-    background-color: #222;
-    transition: left 0.3s ease-in-out; /* Animace pohybu */
+    background-color: #222 !important; /* Vynucení tmavé barvy */
+    transition: left 0.3s ease-in-out;
     display: flex;
     flex-direction: column;
-    z-index: 999;
-    box-shadow: 2px 0 5px rgba(0,0,0,0.3);
+    z-index: 2000; /* Musí být nad vším ostatním */
+    box-shadow: 5px 0 15px rgba(0,0,0,0.5);
 }
 
 .side-menu.active {
-    left: 0 !important; /* Vysune menu na začátek obrazovky */
+    left: 0 !important; /* Vysunutí */
 }
 
 .side-menu a {
-    color: white;
+    color: white !important;
     padding: 15px 25px;
     text-decoration: none;
     border-bottom: 1px solid #333;
+    display: block;
 }
 
 .side-menu a:hover {
     background-color: #f1c40f;
-    color: black;
+    color: black !important;
 }
 
 /* ==========================================================================

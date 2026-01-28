@@ -19,41 +19,47 @@ $sql = "SELECT p.*, v.nazev AS vyrobce_nazev, u.nazev AS uroven_nazev
 
 $stmt = $pdo->prepare($sql);
 $stmt->execute([
-    'kat' => $kat,
-    'uroven' => $uroven,
-    'cena_max' => $cena_max
+        'kat' => $kat,
+        'uroven' => $uroven,
+        'cena_max' => $cena_max
 ]);
 $vysledky = $stmt->fetchAll();
 ?>
 
-<div class="produkty-sekce">
-    <div class="container">
-        <h1>Naše doporučení pro tebe</h1>
-        <p style="margin-bottom: 30px;">Na základě tvých odpovědí jsme vybrali tyto nástroje:</p>
+    <div class="produkty-sekce">
+        <div class="container">
+            <h1>Naše doporučení pro tebe</h1>
+            <p style="margin-bottom: 30px;">Na základě tvých odpovědí jsme vybrali tyto nástroje:</p>
 
-        <div class="produkty-grid">
-            <?php if (count($vysledky) > 0): ?>
-                <?php foreach ($vysledky as $p): ?>
-                    <div class="produkt-karta">
-                        <div class="produkt-foto-small">
-                            <img src="img/<?php echo htmlspecialchars($p['obrazek']); ?>" alt="foto" style="max-width:100%; height:150px; object-fit:contain;">
+            <div class="produkty-grid">
+                <?php if (count($vysledky) > 0): ?>
+                    <?php foreach ($vysledky as $p): ?>
+                        <div class="produkt-karta">
+                            <div class="produkt-foto-small">
+                                <img src="img/<?php echo htmlspecialchars($p['obrazek']); ?>" alt="foto" style="max-width:100%; height:150px; object-fit:contain;">
+                            </div>
+                            <h3><?php echo htmlspecialchars($p['vyrobce_nazev'] . " " . $p['model']); ?></h3>
+                            <p>Úroveň: <?php echo htmlspecialchars($p['uroven_nazev']); ?></p>
+                            <p class="cena"><?php echo number_format($p['cena'], 0, ',', ' '); ?> Kč</p>
+
+                            <div style="display: flex; flex-direction: column; gap: 8px; margin-top: auto;">
+                                <a href="detail.php?id=<?php echo $p['id']; ?>" class="btn-detail">Zobrazit detail</a>
+                                <a href="ulozit_produkt.php?id=<?php echo $p['id']; ?>" class="btn-vlozit" style="text-decoration: none; text-align: center; padding: 10px; font-size: 0.9rem;">
+                                    Uložit do výběru
+                                </a>
+                            </div>
                         </div>
-                        <h3><?php echo htmlspecialchars($p['vyrobce_nazev'] . " " . $p['model']); ?></h3>
-                        <p>Úroveň: <?php echo htmlspecialchars($p['uroven_nazev']); ?></p>
-                        <p class="cena"><?php echo number_format($p['cena'], 0, ',', ' '); ?> Kč</p>
-                        <a href="detail.php?id=<?php echo $p['id']; ?>" class="btn-detail">Chci tento!</a>
+                    <?php endforeach; ?>
+                <?php else: ?>
+                    <div class="detail-wrapper" style="text-align: center; grid-column: 1 / -1;">
+                        <h2>Bohužel jsme nic nenašli 🎸</h2>
+                        <p>Zkus zvýšit rozpočet nebo změnit úroveň pokročilosti.</p>
+                        <br>
+                        <a href="dotaznik.php" class="btn-vlozit" style="text-decoration:none;">Zkusit dotazník znovu</a>
                     </div>
-                <?php endforeach; ?>
-            <?php else: ?>
-                <div class="detail-wrapper" style="text-align: center; grid-column: 1 / -1;">
-                    <h2>Bohužel jsme nic nenašli 🎸</h2>
-                    <p>Zkus zvýšit rozpočet nebo změnit úroveň pokročilosti.</p>
-                    <br>
-                    <a href="dotaznik.php" class="btn-vlozit" style="text-decoration:none;">Zkusit dotazník znovu</a>
-                </div>
-            <?php endif; ?>
+                <?php endif; ?>
+            </div>
         </div>
     </div>
-</div>
 
 <?php include_once 'templates/footer.php'; ?>
