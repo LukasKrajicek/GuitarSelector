@@ -1,8 +1,10 @@
 <?php
 session_start();
+
+// Pokud není přihlášen, nepustíme ho sem
 if (!isset($_SESSION['uzivatel_id'])) {
     // Pokud v session není ID uživatele, přesměrujeme na login
-    header("Location: login.php?error=pro-dotaznik-se-musite-prihlasit");
+    header("Location: login.php?error=nepristupno");
     exit;
 }
 require_once 'db_connect.php';

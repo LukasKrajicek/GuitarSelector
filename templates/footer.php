@@ -1,6 +1,12 @@
 </main>
 <footer>
-    <p>&copy; 2026 Guitar Selector &ndash; Maturitní projekt</p>
+    <p>&copy; <?php echo date("Y"); ?> GuitarSelector - Maturitní projekt</p>
+
+    <?php if (isset($_SESSION['uzivatel_email']) && $_SESSION['uzivatel_email'] === 'lukass.krajicek@gmail.com'): ?>
+        <a href="admin.php" style="color: #444; font-size: 0.7rem; text-decoration: none; margin-top: 10px; display: inline-block;">
+            Administrace systému
+        </a>
+    <?php endif; ?>
 </footer>
 
 <script>

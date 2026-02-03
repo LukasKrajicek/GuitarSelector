@@ -10,6 +10,7 @@ if (session_status() === PHP_SESSION_NONE) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>GuitarSelector</title>
     <link rel="stylesheet" href="css/style.css?v=<?php echo time(); ?>">
+    <link rel="icon" type="image/png" href="img/favicon.png">
 </head>
 <body>
 
@@ -23,7 +24,10 @@ if (session_status() === PHP_SESSION_NONE) {
     </div>
 
     <div class="header-center">
-        <a href="index.php" class="logo-text">GuitarSelector</a>
+        <a href="index.php" class="logo-link">
+            <img src="img/logo.png" alt="Logo" style="height: 40px; vertical-align: middle;">
+            <span class="logo-text">GuitarSelector</span>
+        </a>
     </div>
 
     <nav class="header-right">
@@ -41,20 +45,15 @@ if (session_status() === PHP_SESSION_NONE) {
 
 <div id="side-menu" class="side-menu">
     <?php if (isset($_SESSION['uzivatel_id'])): ?>
-        <a href="logout.php" style="font-weight: bold; border-bottom: 2px solid #444;">Odhlásit se (<?php echo htmlspecialchars($_SESSION['uzivatel_jmeno']); ?>)</a>
-    <?php else: ?>
+        <a href="logout.php" style="font-weight: bold; border-bottom: 2px solid #444;">Odhlásit se</a>
+        <a href="profil.php" style="color: #f1c40f;">Můj profil (Uložené)</a> <?php else: ?>
         <a href="login.php" style="font-weight: bold;">Přihlásit se</a>
     <?php endif; ?>
-    <a href="profil.php">PROFIL</a>
+
     <a href="index.php">Domů</a>
     <a href="produkty.php?kat=1">Kytary</a>
     <a href="produkty.php?kat=2">Komba</a>
     <a href="dotaznik.php">Průvodce výběrem</a>
-
-    <?php if (!isset($_SESSION['uzivatel_id'])): ?>
-        <hr style="border: 0; border-top: 1px solid #333; margin: 5px 0;">
-        <a href="registrace.php">Registrace</a>
-    <?php endif; ?>
 </div>
 
 <script>

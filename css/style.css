@@ -1,17 +1,23 @@
 /* ==========================================================================
-   1. GLOBÁLNÍ NASTAVENÍ (Základ pro celý web)
+   1. GLOBÁLNÍ NASTAVENÍ
    ========================================================================== */
 * {
-    box-sizing: border-box; /* Zajišťuje, že padding neustřelí šířku elementu */
+    box-sizing: border-box;
     margin: 0;
     padding: 0;
 }
 
 body {
     font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-    background-color: #f0f2f5; /* Světle šedé pozadí - nutné pro kontrast bílých boxů */
+    background-color: #f0f2f5;
     color: #1a1a1a;
     line-height: 1.6;
+}
+
+/* OPRAVA FIALOVÉ BARVY A PODTRŽENÍ U LOGA */
+.logo-text, .logo-text:visited, .logo-text:hover, .logo-text:active {
+    color: white !important;
+    text-decoration: none !important;
 }
 
 /* ==========================================================================
@@ -25,16 +31,37 @@ body {
     color: white;
     padding: 0 20px;
     height: 60px;
-    position: sticky; /* Lišta zůstane nahoře při scrollování */
+    position: sticky;
     top: 0;
     z-index: 1000;
 }
 
+/* Centrování loga pomocí absolutní pozice */
+.header-center {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    text-align: center;
+    z-index: 10;
+}
+
 .logo-text {
     color: white;
-    text-decoration: none;
     font-weight: bold;
-    font-size: 1.2rem;
+    font-size: 1.3rem;
+    white-space: nowrap;
+}
+
+.header-right {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.header-right a {
+    color: white;
+    text-decoration: none;
+    font-size: 0.9rem;
 }
 
 /* Tlačítko hamburger menu */
@@ -49,6 +76,7 @@ body {
     gap: 4px;
     width: 40px;
     align-items: center;
+    z-index: 20;
 }
 
 .menu-btn span {
@@ -64,19 +92,19 @@ body {
 .side-menu {
     position: fixed;
     top: 60px;
-    left: -260px; /* Skryté vlevo */
+    left: -260px;
     width: 250px;
     height: calc(100vh - 60px);
-    background-color: #222 !important; /* Vynucení tmavé barvy */
+    background-color: #222 !important;
     transition: left 0.3s ease-in-out;
     display: flex;
     flex-direction: column;
-    z-index: 2000; /* Musí být nad vším ostatním */
+    z-index: 2000;
     box-shadow: 5px 0 15px rgba(0,0,0,0.5);
 }
 
 .side-menu.active {
-    left: 0 !important; /* Vysunutí */
+    left: 0 !important;
 }
 
 .side-menu a {
@@ -97,25 +125,20 @@ body {
    ========================================================================== */
 .welcome-section {
     text-align: center;
-    padding: 60px 20px;
+    padding: 40px 20px;
 }
 
-.btn-start {
-    background-color: #f1c40f;
-    color: black;
-    padding: 12px 25px;
-    text-decoration: none;
-    border-radius: 5px;
-    font-weight: bold;
-    display: inline-block;
-    margin-bottom: 50px;
+.hero-text h2 {
+    margin-bottom: 20px;
+    font-size: 2rem;
 }
 
 .main-boxes {
     display: flex;
     justify-content: center;
     gap: 20px;
-    flex-wrap: wrap; /* Na mobilu se boxy dají pod sebe */
+    flex-wrap: wrap;
+    padding: 20px 0;
 }
 
 .box {
@@ -124,7 +147,7 @@ body {
     padding: 40px 20px;
     border-radius: 10px;
     flex: 1;
-    min-width: 300px;
+    min-width: 280px;
     max-width: 380px;
     text-decoration: none;
     text-align: center;
@@ -134,7 +157,7 @@ body {
 .box:hover { transform: translateY(-5px); }
 
 /* ==========================================================================
-   5. MŘÍŽKA PRODUKTŮ (Kytary / Komba)
+   5. MŘÍŽKA PRODUKTŮ (Katalog)
    ========================================================================== */
 .produkty-sekce { padding: 40px 20px; max-width: 1200px; margin: 0 auto; }
 
@@ -154,6 +177,23 @@ body {
     flex-direction: column;
 }
 
+/* ZOOM EFEKT NA FOTKY V KATALOGU */
+.produkt-foto-nahled {
+    overflow: hidden;
+    border-radius: 8px;
+    background: #f9f9f9;
+    margin-bottom: 15px;
+}
+
+.produkt-foto-nahled img {
+    transition: transform 0.3s ease;
+    display: block;
+}
+
+.produkt-karta:hover .produkt-foto-nahled img {
+    transform: scale(1.1);
+}
+
 .btn-detail {
     margin-top: auto;
     background: #f1c40f;
@@ -166,34 +206,24 @@ body {
 }
 
 /* ==========================================================================
-   6. DETAIL PRODUKTU (TVŮJ POŽADOVANÝ ČTVEREC / BOX)
+   6. DETAIL PRODUKTU
    ========================================================================== */
 .detail-sekce {
     display: flex;
     flex-direction: column;
-    align-items: center; /* Horizontální vycentrování */
-    min-height: 80vh;    /* Zajišťuje prostor na stránce */
+    align-items: center;
+    min-height: 80vh;
     padding: 40px 20px;
 }
 
-.btn-zpet {
-    align-self: flex-start; /* Tlačítko zpět zůstane vlevo */
-    max-width: 700px;
-    margin: 0 auto 15px auto;
-    color: #666;
-    text-decoration: none;
-    font-size: 0.9rem;
-}
-
-/* HLAVNÍ MODERNÍ BOX */
 .detail-wrapper {
-    background: #ffffff;      /* BÍLÁ BARVA BOXU */
+    background: #ffffff;
     width: 100%;
-    max-width: 700px;         /* Šířka boxu */
-    padding: 40px;            /* Vnitřní prostor */
-    border-radius: 15px;      /* Zaoblené rohy */
-    border: 1px solid #ddd;   /* Jemné ohraničení */
-    box-shadow: 0 15px 35px rgba(0,0,0,0.15); /* SILNÝ STÍN - dělá box "hezkým" */
+    max-width: 700px;
+    padding: 40px;
+    border-radius: 15px;
+    border: 1px solid #ddd;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.15);
     text-align: left;
 }
 
@@ -208,43 +238,13 @@ body {
     text-transform: uppercase;
 }
 
-.detail-tabulka {
-    width: 100%;
-    border-collapse: collapse;
-    margin: 20px 0 30px 0;
-}
-
-.detail-tabulka td {
-    padding: 12px 5px;
-    border-bottom: 1px solid #eee;
-}
-
-.detail-tabulka td:first-child {
-    font-weight: bold;
-    color: #777;
-    width: 35%;
-}
-
-.cena-velka {
-    font-size: 1.8rem;
-    font-weight: bold;
-}
-/* obrazek */
-.detail-foto {
-    width: 100%;
-    text-align: center;
-    background-color: #f9f9f9;
-    padding: 20px;
-    border-radius: 10px;
-    margin-bottom: 25px;
-}
-
 .detail-foto img {
-    max-height: 300px; /* Aby fotka nebyla obří přes celou obrazovku */
+    max-width: 100%;
+    height: auto;
+    max-height: 300px;
     object-fit: contain;
 }
 
-/* Žluté moderní tlačítko */
 .btn-vlozit {
     background-color: #f1c40f;
     color: black;
@@ -258,10 +258,55 @@ body {
     transition: 0.2s;
 }
 
-.btn-vlozit:hover { background-color: #e2b900; }
+/* ==========================================================================
+   7. RESPONZIVITA (MOBILY)
+   ========================================================================== */
+@media (max-width: 768px) {
+    .header-right {
+        display: none !important;
+    }
+
+    .header-center {
+        width: auto;
+    }
+
+    .logo-text {
+        font-size: 1.1rem;
+    }
+
+    .hero-text h2 {
+        font-size: 1.5rem;
+    }
+
+    .main-boxes {
+        flex-direction: column;
+        align-items: center;
+        gap: 15px;
+    }
+
+    .box {
+        width: 100%;
+        max-width: 100%;
+        min-width: unset;
+        padding: 30px 15px;
+    }
+
+    .detail-wrapper {
+        padding: 20px;
+    }
+
+    .detail-tabulka td:first-child {
+        width: 45%;
+    }
+
+    iframe {
+        border-radius: 8px;
+        width: 100% !important;
+    }
+}
 
 /* ==========================================================================
-   7. PATIČKA
+   8. PATIČKA
    ========================================================================== */
 footer {
     background-color: #1a1a1a;

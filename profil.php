@@ -4,7 +4,7 @@ include_once 'templates/header.php';
 
 // Pokud není přihlášen, nepustíme ho sem
 if (!isset($_SESSION['uzivatel_id'])) {
-    header("Location: login.php");
+    header("Location: login.php?error=nemate-pristup");
     exit;
 }
 

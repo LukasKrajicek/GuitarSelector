@@ -1,6 +1,6 @@
 <?php
 require_once 'db_connect.php';
-session_start(); // Startujeme session - důležité!
+session_start();
 
 $error = "";
 
@@ -15,6 +15,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     // password_verify porovná zadané heslo s hashem v DB
     if ($uzivatel && password_verify($heslo, $uzivatel['heslo'])) {
+        $_SESSION['uzivatel_email'] = $uzivatel['email'];
         $_SESSION['uzivatel_id'] = $uzivatel['id'];
         $_SESSION['uzivatel_jmeno'] = $uzivatel['jmeno'];
 
