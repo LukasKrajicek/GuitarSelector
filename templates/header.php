@@ -41,6 +41,39 @@ if (session_status() === PHP_SESSION_NONE) {
             <a href="registrace.php" style="color: white; text-decoration: none; font-size: 0.9rem;">Registrace</a>
         <?php endif; ?>
     </nav>
+
+    <div id="flash-container" style="position: fixed; top: 70px; left: 50%; transform: translateX(-50%); z-index: 9999; width: 90%; max-width: 400px;">
+        <?php if (isset($_GET['login']) && $_GET['login'] == 'success'): ?>
+            <div class="flash-message" style="background: #27ae60; color: white; text-align: center; padding: 15px; border-radius: 8px; font-weight: bold; box-shadow: 0 4px 12px rgba(0,0,0,0.2); margin-bottom: 10px;">
+                Vítejte zpět! 👋 Přihlášení proběhlo úspěšně.
+            </div>
+        <?php endif; ?>
+
+        <?php if (isset($_GET['success']) && $_GET['success'] == 'registrovan'): ?>
+            <div class="flash-message" style="background: #27ae60; color: white; text-align: center; padding: 15px; border-radius: 8px; font-weight: bold; box-shadow: 0 4px 12px rgba(0,0,0,0.2); margin-bottom: 10px;">
+                Registrace byla úspěšná! 🎉 Nyní se můžete přihlásit.
+            </div>
+        <?php endif; ?>
+
+        <?php if (isset($_GET['msg']) && $_GET['msg'] == 'smazano'): ?>
+            <div class="flash-message" style="background: #e67e22; color: white; text-align: center; padding: 15px; border-radius: 8px; font-weight: bold; box-shadow: 0 4px 12px rgba(0,0,0,0.2); margin-bottom: 10px;">
+                Odstraněno z databáze. 🗑️
+            </div>
+        <?php endif; ?>
+    </div>
+
+    <script>
+        // Najde všechny hlášky a po 3 sekundách je nechá zmizet
+        setTimeout(function() {
+            const messages = document.querySelectorAll('.flash-message');
+            messages.forEach(msg => {
+                msg.style.transition = "opacity 0.5s ease";
+                msg.style.opacity = "0";
+                setTimeout(() => msg.remove(), 500); // Po animaci úplně smaže z HTML
+            });
+        }, 3000);
+    </script>
+
 </header>
 
 <div id="side-menu" class="side-menu">

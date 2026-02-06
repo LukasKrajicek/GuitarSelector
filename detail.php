@@ -53,6 +53,21 @@ if (!$produkt) {
                     <td>Výrobce:</td>
                     <td><?php echo htmlspecialchars($produkt['vyrobce_nazev']); ?> (<?php echo htmlspecialchars($produkt['zeme_nazev']); ?>)</td>
                 </tr>
+
+                <?php if (!empty($produkt['vykon_w'])): ?>
+                    <tr>
+                        <td>Výkon:</td>
+                        <td><?php echo htmlspecialchars($produkt['vykon_w']); ?> W</td>
+                    </tr>
+                <?php endif; ?>
+
+                <?php if (!empty($produkt['technologie'])): ?>
+                    <tr>
+                        <td>Technologie:</td>
+                        <td><?php echo htmlspecialchars($produkt['technologie']); ?></td>
+                    </tr>
+                <?php endif; ?>
+
                 <tr>
                     <td>Vhodné pro:</td>
                     <td><?php echo htmlspecialchars($produkt['uroven_nazev']); ?></td>
@@ -61,17 +76,6 @@ if (!$produkt) {
                     <td>Styl:</td>
                     <td><?php echo htmlspecialchars($produkt['styl']); ?></td>
                 </tr>
-
-                <?php if ($produkt['kategorie_id'] == 2): ?>
-                    <tr>
-                        <td>Výkon:</td>
-                        <td><?php echo htmlspecialchars($produkt['vykon_w'] ?? 'Neznámý'); ?> W</td>
-                    </tr>
-                    <tr>
-                        <td>Technologie:</td>
-                        <td><?php echo htmlspecialchars($produkt['technologie'] ?? 'Neznámá'); ?></td>
-                    </tr>
-                <?php endif; ?>
             </table>
 
             <button class="btn-vlozit">Uložit do mého výběru</button>

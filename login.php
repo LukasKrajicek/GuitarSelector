@@ -19,7 +19,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $_SESSION['uzivatel_id'] = $uzivatel['id'];
         $_SESSION['uzivatel_jmeno'] = $uzivatel['jmeno'];
 
-        header("Location: index.php"); // Po přihlášení šup na hlavní stranu
+        header("Location: index.php?login=success");
         exit;
     } else {
         $error = "Špatný email nebo heslo!";
