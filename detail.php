@@ -6,16 +6,19 @@ include_once 'templates/header.php';
 $id = isset($_GET['id']) ? (int)$_GET['id'] : 0;
 
 if ($id > 0) {
+    // OPRAVENÝ SQL DOTAZ: Přidán JOIN na tabulku styly
     $sql = "SELECT p.*, 
                    v.nazev AS vyrobce_nazev, 
                    u.nazev AS uroven_nazev, 
                    z.nazev AS zeme_nazev,
-                   k.nazev AS kategorie_nazev
+                   k.nazev AS kategorie_nazev,
+                   s.nazev AS styl_nazev
             FROM produkty p
             JOIN vyrobci v ON p.vyrobce_id = v.id
             JOIN urovne u ON p.uroven_id = u.id
             JOIN zeme z ON v.zeme_id = z.id
             JOIN kategorie k ON p.kategorie_id = k.id
+            JOIN styly s ON p.styl_id = s.id
             WHERE p.id = :id";
 
     $stmt = $pdo->prepare($sql);
@@ -54,18 +57,20 @@ if (!$produkt) {
                     <td><?php echo htmlspecialchars($produkt['vyrobce_nazev']); ?> (<?php echo htmlspecialchars($produkt['zeme_nazev']); ?>)</td>
                 </tr>
 
-                <?php if (!empty($produkt['vykon_w'])): ?>
-                    <tr>
-                        <td>Výkon:</td>
-                        <td><?php echo htmlspecialchars($produkt['vykon_w']); ?> W</td>
-                    </tr>
-                <?php endif; ?>
+                <?php if ($produkt['kategorie_id'] == 2): ?>
+                    <?php if (!empty($produkt['vykon_w'])): ?>
+                        <tr>
+                            <td>Výkon:</td>
+                            <td><?php echo htmlspecialchars($produkt['vykon_w']); ?> W</td>
+                        </tr>
+                    <?php endif; ?>
 
-                <?php if (!empty($produkt['technologie'])): ?>
-                    <tr>
-                        <td>Technologie:</td>
-                        <td><?php echo htmlspecialchars($produkt['technologie']); ?></td>
-                    </tr>
+                    <?php if (!empty($produkt['technologie'])): ?>
+                        <tr>
+                            <td>Technologie:</td>
+                            <td><?php echo htmlspecialchars($produkt['technologie']); ?></td>
+                        </tr>
+                    <?php endif; ?>
                 <?php endif; ?>
 
                 <tr>
@@ -74,11 +79,35 @@ if (!$produkt) {
                 </tr>
                 <tr>
                     <td>Styl:</td>
-                    <td><?php echo htmlspecialchars($produkt['styl']); ?></td>
+                    <td><?php echo htmlspecialchars($produkt['styl_nazev']); ?></td>
                 </tr>
             </table>
 
-            <button class="btn-vlozit">Uložit do mého výběru</button>
+            <div style="max-width: 500px; margin: 20px auto;">
+                <?php if (isset($_GET['msg'])): ?>
+                    <?php if ($_GET['msg'] == 'ulozeno'): ?>
+                        <div style="background: #27ae60; color: white; padding: 12px; border-radius: 8px; text-align: center; font-weight: bold; animation: fadeIn 0.5s;">
+                            ⭐ Produkt byl uložen do tvého výběru!
+                        </div>
+                    <?php elseif ($_GET['msg'] == 'uz_existuje'): ?>
+                        <div style="background: #e74c3c; color: white; padding: 12px; border-radius: 8px; text-align: center; font-weight: bold; animation: shake 0.5s;">
+                            ❌ Tento produkt už ve svém výběru máš.
+                        </div>
+                    <?php endif; ?>
+                <?php endif; ?>
+            </div>
+
+            <div style="display: flex; justify-content: center; margin-top: 20px;">
+                <?php if (isset($_SESSION['uzivatel_id'])): ?>
+                    <a href="ulozit_oblibene.php?id=<?php echo $produkt['id']; ?>" class="btn-vlozit" style="text-decoration: none; padding: 15px 40px; font-size: 1.1rem; border-radius: 30px; transition: transform 0.2s;">
+                        ⭐ Uložit do mého výběru
+                    </a>
+                <?php else: ?>
+                    <p style="background: #f9f9f9; padding: 15px; border-radius: 10px; border: 1px dashed #ccc;">
+                        Pro ukládání do výběru se musíte <a href="login.php" style="color: #f1c40f; font-weight: bold;">přihlásit</a>.
+                    </p>
+                <?php endif; ?>
+            </div>
         </div>
     </div>
 

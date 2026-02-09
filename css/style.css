@@ -164,7 +164,7 @@ body {
 .produkty-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: 25px;
+    gap: 30px; /* Zvětšena mezera pro "vzduch" mezi kartami */
 }
 
 .produkt-karta {
@@ -175,6 +175,8 @@ body {
     box-shadow: 0 4px 6px rgba(0,0,0,0.05);
     display: flex;
     flex-direction: column;
+    height: 100%; /* Fix výšky všech karet v řádku */
+    overflow: hidden; /* Zabrání přetečení obsahu ven z karty */
 }
 
 /* ZOOM EFEKT NA FOTKY V KATALOGU */
@@ -183,11 +185,18 @@ body {
     border-radius: 8px;
     background: #f9f9f9;
     margin-bottom: 15px;
+    height: 200px; /* Pevná výška kontejneru pro foto */
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .produkt-foto-nahled img {
     transition: transform 0.3s ease;
     display: block;
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain; /* Tato vlastnost zajistí, že se kytara nepomačká a nevyjede z boxu */
 }
 
 .produkt-karta:hover .produkt-foto-nahled img {
