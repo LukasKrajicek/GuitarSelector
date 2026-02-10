@@ -2,72 +2,65 @@
 session_start();
 require_once 'db_connect.php';
 
-// OCHRANA: Přístup má jen tvůj Gmail
 if (!isset($_SESSION['uzivatel_id']) || $_SESSION['uzivatel_email'] !== 'lukass.krajicek@gmail.com') {
-    header("Location: index.php?error=nemate-pristup");
+    header("Location: index.php");
     exit;
 }
 
 include_once 'templates/header.php';
+
+// Načtení všech produktů
+$produkty = $pdo->query("SELECT p.*, v.nazev as vyrobce, k.nazev as kategorie FROM produkty p 
+                         JOIN vyrobci v ON p.vyrobce_id = v.id 
+                         JOIN kategorie k ON p.kategorie_id = k.id 
+                         ORDER BY p.id DESC")->fetchAll();
 ?>
 
-    <div class="detail-sekce">
-        <div class="detail-wrapper" style="max-width: 1000px;">
-            <h1>Správa produktů</h1>
-            <p>Zde můžete kontrolovat a mazat kytary z nabídky.</p>
-
-            <div style="background: #f9f9f9; padding: 15px; border-radius: 8px; margin-bottom: 20px; display: flex; gap: 20px; flex-wrap: wrap;">
-                <strong>Sekce:</strong>
-                <a href="admin.php" style="color: #444; text-decoration: none;">+ Přidat produkt</a>
-                <a href="admin_produkty.php" style="color: #f1c40f; font-weight: bold;">🎸 Správa produktů</a>
-                <a href="admin_uzivatele.php" style="color: #444; text-decoration: none;">👥 Registrovaní uživatelé</a>
+    <section class="admin-sekce">
+        <div class="container">
+            <div class="quiz-card" style="margin-bottom: 30px; padding: 20px;">
+                <div style="display: flex; gap: 20px; align-items: center; flex-wrap: wrap;">
+                    <h2 style="margin:0; font-size: 1.2rem; border-right: 2px solid #eee; padding-right: 20px;">🛠️ Administrace</h2>
+                    <a href="admin.php" style="text-decoration:none; color: var(--text-muted);">+ Přidat produkt</a>
+                    <a href="admin_produkty.php" class="feature-link" style="color: var(--main-yellow);">🎸 Správa produktů</a>
+                    <a href="admin_uzivatele.php" style="text-decoration:none; color: var(--text-muted);">👥 Registrovaní uživatelé</a>
+                </div>
             </div>
 
-            <?php if(isset($_GET['msg']) && $_GET['msg'] == 'smazano'): ?>
-                <p style="color: green; font-weight: bold; margin-bottom: 15px;">Produkt byl úspěšně odstraněn.</p>
-            <?php endif; ?>
+            <div class="quiz-card">
+                <h1 style="margin-bottom: 20px;">Seznam všech produktů</h1>
 
-            <div style="overflow-x: auto;">
-                <table style="width:100%; border-collapse: collapse; background: white; border: 1px solid #ddd;">
-                    <thead>
-                    <tr style="background: #222b31; color: white; text-align: left;">
-                        <th style="padding: 12px; border: 1px solid #ddd;">Model</th>
-                        <th style="padding: 12px; border: 1px solid #ddd;">Cena</th>
-                        <th style="padding: 12px; border: 1px solid #ddd; text-align: center;">Akce</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <?php
-                    $sql = "SELECT p.id, p.model, p.cena, v.nazev AS vyrobce 
-                            FROM produkty p 
-                            LEFT JOIN vyrobci v ON p.vyrobce_id = v.id 
-                            ORDER BY p.id DESC";
-                    $stmt = $pdo->query($sql);
-                    while ($p = $stmt->fetch()):
-                        ?>
+                <div style="overflow-x: auto;"> <table>
+                        <thead>
                         <tr>
-                            <td style="padding: 10px; border: 1px solid #ddd;">
-                                <strong><?php echo htmlspecialchars($p['vyrobce']); ?></strong> <?php echo htmlspecialchars($p['model']); ?>
-                            </td>
-                            <td style="padding: 10px; border: 1px solid #ddd;">
-                                <?php echo number_format($p['cena'], 0, ',', ' '); ?> Kč
-                            </td>
-                            <td style="padding: 10px; border: 1px solid #ddd; text-align: center;">
-                                <a href="smazat_produkt.php?id=<?php echo $p['id']; ?>"
-                                   onclick="return confirm('Opravdu smazat tento produkt?')"
-                                   style="color: white; background: #e74c3c; padding: 5px 10px; border-radius: 4px; text-decoration: none; font-size: 0.8rem;">
-                                    Smazat
-                                </a>
-                            </td>
+                            <th>ID</th>
+                            <th>Foto</th>
+                            <th>Výrobce a Model</th>
+                            <th>Kategorie</th>
+                            <th>Cena</th>
+                            <th>Akce</th>
                         </tr>
-                    <?php endwhile; ?>
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody>
+                        <?php foreach ($produkty as $p): ?>
+                            <tr>
+                                <td>#<?php echo $p['id']; ?></td>
+                                <td><img src="img/<?php echo $p['obrazek']; ?>" style="width: 50px; height: 50px; object-fit: contain; background: #f9f9f9; border-radius: 5px;"></td>
+                                <td><strong><?php echo htmlspecialchars($p['vyrobce'] . " " . $p['model']); ?></strong></td>
+                                <td><?php echo htmlspecialchars($p['kategorie']); ?></td>
+                                <td><?php echo number_format($p['cena'], 0, ',', ' '); ?> Kč</td>
+                                <td>
+                                    <a href="smazat_produkt.php?id=<?php echo $p['id']; ?>"
+                                       style="color: #e74c3c; text-decoration: none; font-weight: bold;"
+                                       onclick="return confirm('Opravdu smazat?')">Smazat</a>
+                                </td>
+                            </tr>
+                        <?php endforeach; ?>
+                        </tbody>
+                    </table>
+                </div>
             </div>
-
-            <br>
-            <a href="index.php" style="color: #666; text-decoration:none;">← Zpět na hlavní stránku</a>
         </div>
-    </div>
+    </section>
 
 <?php include_once 'templates/footer.php'; ?>

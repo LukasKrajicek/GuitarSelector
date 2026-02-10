@@ -1,95 +1,92 @@
 <?php
 require_once 'db_connect.php';
-include_once 'templates/header.php';
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
 
 $error = "";
-$success = "";
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $jmeno = trim($_POST['jmeno']);
-    $prijmeni = trim($_POST['prijmeni']);
     $email = trim($_POST['email']);
     $heslo = $_POST['heslo'];
+    $heslo2 = $_POST['heslo2'];
 
-    // 1. VALIDACE: Jsou pole vyplněná?
-    if (empty($jmeno) || empty($prijmeni) || empty($email) || empty($heslo)) {
-        $error = "Všechna pole jsou povinná!";
-    }
-    // 2. VALIDACE: Je heslo dost dlouhé? (Maturitní pojistka)
-    elseif (strlen($heslo) < 6) {
-        $error = "Heslo musí mít alespoň 6 znaků!";
-    }
-    else {
-        try {
-            // 3. KONTROLA: Existuje už tento email?
-            $checkEmail = $pdo->prepare("SELECT id FROM uzivatele WHERE email = ?");
-            $checkEmail->execute([$email]);
+    // Základní kontrola
+    if ($heslo !== $heslo2) {
+        $error = "Hesla se neshodují!";
+    } else {
+        // Kontrola, zda email už neexistuje
+        $check = $pdo->prepare("SELECT id FROM uzivatele WHERE email = :email");
+        $check->execute(['email' => $email]);
 
-            if ($checkEmail->fetch()) {
-                $error = "Tento email už je u nás registrovaný. Zkuste se přihlásit.";
+        if ($check->fetch()) {
+            $error = "Tento email už je zaregistrován!";
+        } else {
+            // Hashování hesla pro bezpečnost
+            $hash = password_hash($heslo, PASSWORD_DEFAULT);
+
+            $sql = "INSERT INTO uzivatele (jmeno, email, heslo) VALUES (:jmeno, :email, :heslo)";
+            $stmt = $pdo->prepare($sql);
+
+            if ($stmt->execute(['jmeno' => $jmeno, 'email' => $email, 'heslo' => $hash])) {
+                header("Location: login.php?success=registrovan");
+                exit;
             } else {
-                // 4. Vše je OK -> Hashování a zápis
-                $hashed_heslo = password_hash($heslo, PASSWORD_DEFAULT);
-                $sql = "INSERT INTO uzivatele (jmeno, prijmeni, email, heslo) VALUES (:jmeno, :prijmeni, :email, :heslo)";
-                $stmt = $pdo->prepare($sql);
-                $stmt->execute([
-                        'jmeno' => $jmeno,
-                        'prijmeni' => $prijmeni,
-                        'email' => $email,
-                        'heslo' => $hashed_heslo
-                ]);
-                $success = "Registrace proběhla úspěšně! Nyní se můžete přihlásit.";
+                $error = "Něco se nepovedlo, zkus to znovu.";
             }
-        } catch (PDOException $e) {
-            $error = "Chyba při registraci: Zkuste to prosím znovu.";
         }
     }
 }
+include_once 'templates/header.php';
 ?>
 
-    <div class="detail-sekce">
-        <div class="detail-wrapper">
-            <span class="kategorie-tag">Nový účet</span>
-            <h1>Vytvořit účet</h1>
+    <section class="registrace-sekce">
+        <div class="container">
+            <div class="quiz-card" style="max-width: 500px;">
+                <span class="badge" style="background: var(--dark-blue); color: var(--main-yellow);">Nová registrace</span>
 
-            <?php if ($error): ?>
-                <p style="color: #e74c3c; margin-bottom: 15px; font-weight: bold; background: #fdf2f2; padding: 10px; border-radius: 5px; border-left: 5px solid #e74c3c;">
-                    <?php echo $error; ?>
-                </p>
-            <?php endif; ?>
+                <h1 style="margin: 20px 0; color: var(--dark-blue); text-align: center;">Vytvořit účet</h1>
 
-            <?php if ($success): ?>
-                <p style="color: #27ae60; margin-bottom: 15px; font-weight: bold; background: #f2fdf5; padding: 10px; border-radius: 5px; border-left: 5px solid #27ae60;">
-                    <?php echo $success; ?>
-                </p>
-                <a href="login.php" class="btn-vlozit" style="display: block; text-align: center; text-decoration: none;">Přejít k přihlášení</a>
-            <?php else: ?>
-                <form action="registrace.php" method="POST">
-                    <div style="margin-bottom: 15px;">
-                        <label style="display: block; margin-bottom: 5px; font-weight: bold;">Jméno:</label>
-                        <input type="text" name="jmeno" value="<?php echo isset($jmeno) ? htmlspecialchars($jmeno) : ''; ?>" required style="width: 100%; padding: 12px; border-radius: 8px; border: 1px solid #ddd;">
+                <?php if ($error): ?>
+                    <div style="background: #fee2e2; color: #b91c1c; padding: 12px; border-radius: 8px; margin-bottom: 20px; text-align: center; border: 1px solid #fecaca;">
+                        ⚠️ <?php echo $error; ?>
                     </div>
-                    <div style="margin-bottom: 15px;">
-                        <label style="display: block; margin-bottom: 5px; font-weight: bold;">Příjmení:</label>
-                        <input type="text" name="prijmeni" value="<?php echo isset($prijmeni) ? htmlspecialchars($prijmeni) : ''; ?>" required style="width: 100%; padding: 12px; border-radius: 8px; border: 1px solid #ddd;">
-                    </div>
-                    <div style="margin-bottom: 15px;">
-                        <label style="display: block; margin-bottom: 5px; font-weight: bold;">Email:</label>
-                        <input type="email" name="email" value="<?php echo isset($email) ? htmlspecialchars($email) : ''; ?>" required style="width: 100%; padding: 12px; border-radius: 8px; border: 1px solid #ddd;">
-                    </div>
-                    <div style="margin-bottom: 25px;">
-                        <label style="display: block; margin-bottom: 5px; font-weight: bold;">Heslo (min. 6 znaků):</label>
-                        <input type="password" name="heslo" required style="width: 100%; padding: 12px; border-radius: 8px; border: 1px solid #ddd;">
+                <?php endif; ?>
+
+                <form method="POST">
+                    <div class="form-group">
+                        <label>Celé jméno</label>
+                        <input type="text" name="jmeno" class="form-control" placeholder="Např. Jan Novák" required>
                     </div>
 
-                    <button type="submit" class="btn-vlozit">Zaregistrovat se</button>
+                    <div class="form-group">
+                        <label>E-mailová adresa</label>
+                        <input type="email" name="email" class="form-control" placeholder="vas@email.cz" required>
+                    </div>
+
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                        <div class="form-group">
+                            <label>Heslo</label>
+                            <input type="password" name="heslo" class="form-control" placeholder="••••••••" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Kontrola hesla</label>
+                            <input type="password" name="heslo2" class="form-control" placeholder="••••••••" required>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn-submit" style="width: 100%; margin-top: 10px;">
+                        ZAREGISTROVAT SE
+                    </button>
                 </form>
-            <?php endif; ?>
 
-            <p style="margin-top: 20px; text-align: center; font-size: 0.9rem;">
-                Už máte účet? <a href="login.php" style="color: #222b31; font-weight: bold;">Přihlaste se</a>
-            </p>
+                <div style="margin-top: 25px; text-align: center; border-top: 1px solid #eee; padding-top: 20px;">
+                    <p style="color: var(--text-muted);">Už máš účet?</p>
+                    <a href="login.php" style="color: var(--main-yellow); font-weight: 900; text-decoration: none;">Přihlásit se zde →</a>
+                </div>
+            </div>
         </div>
-    </div>
+    </section>
 
 <?php include_once 'templates/footer.php'; ?>
