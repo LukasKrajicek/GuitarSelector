@@ -44,7 +44,7 @@ include_once 'templates/header.php';
     <section class="registrace-sekce">
         <div class="container">
             <div class="quiz-card" style="max-width: 500px;">
-                <span class="badge" style="background: var(--dark-blue); color: var(--main-yellow);">Nová registrace</span>
+                <span class="badge">Nová registrace</span>
 
                 <h1 style="margin: 20px 0; color: var(--dark-blue); text-align: center;">Vytvořit účet</h1>
 

@@ -1,0 +1,12 @@
+1. Černý text u uložit do výberu v dotazníku samostatné kytary/komba
+-> style="background: var(--dark-blue); color: var(--main-yellow);">
+
+2. Dodělat, že každý hudební styl bude mít vždy každou možnost Pokročilosti
+
+3. Odebrat od každé kytary a komba v databázi značku z názvu kytary (Způsobuje to - Fender Fender Stratocaster)
+
+4. Dodat fotky do databáze
+
+5 Rozdělat img na určité části (kytary, komba, ostatní)
+
+6. Když někdo si udělá dotazník, ale není příhlášen, vyskočí mu hláška

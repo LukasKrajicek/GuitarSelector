@@ -91,7 +91,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                             </select>
                         </div>
                         <div class="form-group">
-                            <label>Maximální budget (Kč)</label>
+                            <label>Maximální budget</label>
                             <input type="number" name="budget" class="form-control" value="20000">
                         </div>
                     </div>
@@ -141,12 +141,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
                 <div style="margin-top: 30px;">
                     <?php if ($hledal_set && isset($vysledek['kytara']['id']) && isset($vysledek['kombo']['id'])): ?>
-                        <a href="ulozit_set.php?k_id=<?php echo $vysledek['kytara']['id']; ?>&a_id=<?php echo $vysledek['kombo']['id']; ?>" class="btn-set-save">
+                        <a href="ulozit_set.php?k_id=<?php echo $vysledek['kytara']['id']; ?>&a_id=<?php echo $vysledek['kombo']['id']; ?>" class="btn-vlozit">
                             💾 ULOŽIT KOMPLETNÍ SET DO PROFILU
                         </a>
                     <?php elseif (isset($vysledek['kytara']['id']) || isset($vysledek['kombo']['id'])): ?>
                         <?php $p_id = isset($vysledek['kytara']['id']) ? $vysledek['kytara']['id'] : $vysledek['kombo']['id']; ?>
-                        <a href="ulozit_oblibene.php?id=<?php echo $p_id; ?>" class="btn-set-save" style="background: var(--dark-blue); color: var(--main-yellow);">
+                        <a href="ulozit_oblibene.php?id=<?php echo $p_id; ?>" class="btn-vlozit">
                             ⭐ ULOŽIT DO MÉHO VÝBĚRU
                         </a>
                     <?php endif; ?>

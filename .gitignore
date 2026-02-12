@@ -1,7 +1,7 @@
 # --- DATABÁZE A KONFIGURACE ---
-# Nikdy nahrávat přihlašovací údaje na GitHub!
 db_connect.php
 config.php
+poznamky.txt
 
 # --- SYSTÉMOVÉ SOUBORY ---
 .DS_Store

@@ -63,7 +63,7 @@ include_once 'templates/header.php';
                 <form method="POST">
                     <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
                         <div class="form-group">
-                            <label>Typ produktu (Kategorie)</label>
+                            <label>Typ produktu</label>
                             <select name="kategorie_id" id="kat_select" class="form-control" required>
                                 <option value="">-- Vyber typ --</option>
                                 <?php

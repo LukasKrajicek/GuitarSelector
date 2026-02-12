@@ -10,7 +10,7 @@ include_once 'templates/header.php';
                 <p>Najděte si ideální nástroj a zvuk pro vaše hraní. Využijte náš inteligentní konfigurátor nebo si prohlédněte katalog.</p>
                 <div class="hero-btns">
                     <a href="dotaznik.php" class="btn-main">Spustit konfigurátor</a>
-                    <a href="#video-sekce" class="btn-secondary">Přehrát video</a>
+                    <a href="#video-sekce" class="btn-secondary">Video</a>
                 </div>
             </div>
         </div>

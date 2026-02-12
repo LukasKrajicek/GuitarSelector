@@ -31,7 +31,7 @@ include_once 'templates/header.php';
 
     <section class="login-sekce">
         <div class="container">
-            <div class="quiz-card" style="max-width: 450px;"> <span class="badge" style="background: var(--dark-blue); color: var(--main-yellow);">Přihlášení</span>
+            <div class="quiz-card" style="max-width: 450px;"> <span class="badge">Přihlášení</span>
 
                 <h1 style="margin: 20px 0; color: var(--dark-blue); text-align: center;">Vítejte zpět</h1>
 

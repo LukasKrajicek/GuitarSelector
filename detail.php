@@ -35,7 +35,7 @@ if (!$produkt) {
 ?>
 
     <section class="container" style="padding-top: 40px;">
-        <a href="javascript:history.back()" class="btn-reset" style="margin-bottom: 20px; display: inline-block;">← Zpět na výběr</a>
+        <a href="javascript:history.back()" class="btn-zpet" style="margin-bottom: 20px; display: inline-block;">← Zpět na výběr</a>
 
         <div class="quiz-card" style="max-width: 900px;"> <span class="badge" style="background: var(--dark-blue); color: var(--main-yellow); font-size: 0.9rem;">
             <?php echo htmlspecialchars($produkt['kategorie_nazev']); ?>
